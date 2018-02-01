@@ -1,22 +1,33 @@
 import React from 'react';
-import FilterLink from '../containers/FilterLink';
 
-const Footer = () => (
-  <p>
-    Show:
-    {' '}
-    <FilterLink filter="all">
-     All
-    </FilterLink>
-    {', '}
-    <FilterLink filter="active">
-     Active
-    </FilterLink>
-    {', '}
-    <FilterLink filter="complted">
-     Completed
-    </FilterLink>
-  </p>
-);
+import FilterLink from './FilterLink';
 
-export default Footer;
+export default ({
+    store
+}) => {
+    return (
+        <div>
+            <p>
+                Show:
+                {' '}
+                <FilterLink
+                    filter='all'
+                >
+                    All
+                </FilterLink>
+                {', '}
+                <FilterLink
+                    filter='active'
+                >
+                    Active
+                </FilterLink>
+                {', '}
+                <FilterLink
+                    filter='completed'
+                >
+                    Completed
+                </FilterLink>
+            </p>
+        </div>
+    );
+}

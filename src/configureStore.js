@@ -1,16 +1,22 @@
 import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
-// 이 todoApp 이 어디서 오는건지 모르겠어 root reducer 이름이여야 하지 않나?
-import todoApp from './reducers';
+import logger from 'redux-logger';
+
+import reducer from './reducers';
 
 const configureStore = () => {
-  const middlewares = [thunk];
-  if (process.env.NODE_ENV !== 'production') {
-    middlewares.push(createLogger());
-  }
-  return createStore(todoApp, composeWithDevTools(applyMiddleware(...middlewares)));
-};
+    const middlewares = [thunk];
+
+    if (process.env.NODE_ENV !== 'production') {
+        middlewares.push(logger);
+    }
+
+    const store = createStore(
+        reducer,
+        applyMiddleware(...middlewares)
+    );
+
+    return store;
+}
 
 export default configureStore;

@@ -1,29 +1,28 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { addTodo } from '../actions/actions';
 
-const AddTodo = ({ dispatch }) => {
-  let input;
+import { addTodo } from '../actions';
 
-  return (
-    <div>
-      <input ref={(node) => {
-        input = node;
-      }}
-      />
-      <button onClick={() => {
-        dispatch(addTodo(input.value));
-        input.value = '';
-      }}
-      >
-        Add Todo
-      </button>
-    </div>
-  );
-};
+const addTodoComponent = ({ dispatch }) => {
+    let input;
 
-AddTodo.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+    return (
+        <div>
+            <input ref={node => {
+                input = node
+            }} />
+            <button
+                onClick={() => {
+                    dispatch(
+                        addTodo(input.value)
+                    )
+            }} >
+                Add Todo
+            </button>
+        </div>
+    );
+}
 
-export default connect()(AddTodo);
+const addTodoContainer = connect()(addTodoComponent);
+
+export default addTodoContainer;

@@ -1,62 +1,33 @@
-import { v4 } from 'node-uuid';
+import fakeDatabase from '../fakeDatabase';
 
-// This is a fake in-memory implementation of something
-// that would be implemented by calling a REST server.
+const delay = (ms) =>
+    new Promise(resolve => setTimeout(resolve, ms));
 
-const fakeDatabase = {
-  todos: [{
-    id: v4(),
-    text: 'hey',
-    completed: true,
-  }, {
-    id: v4(),
-    text: 'ho',
-    completed: true,
-  }, {
-    id: v4(),
-    text: 'let’s go',
-    completed: false,
-  }],
-};
+export const fetchTodos = (filter) =>
+    delay(500).then(() => {
+        switch(filter) {
+            case 'all':
+                return fakeDatabase.todos;
+            case 'active':
+                return fakeDatabase.todos.filter(todo => !todo.completed);
+            case 'completed':
+                return fakeDatabase.todos.filter(todo => todo.completed);
+            default:
+                throw new Error(`Unknown filter ${filter}`);
+        }
+    });
 
-const delay = (ms) => {
-  const promise = new Promise();
-  promise(resolve => setTimeout(resolve, ms));
-};
+export const addTodo = (text) =>
+    delay(400).then(() =>
+        new Promise((resolve) => {
+            resolve(fakeDatabase.addTodo(text));
+        })
+    );
 
-export const fetchTodos = (filter) => {
-  // 여기 감쌀 때 {} 쓰라고 맨날 잔소리.. 코드 끝까지 감싸요!
-  delay(500).then(() => {
-    switch (filter) {
-      case 'all':
-        return fakeDatabase.todos;
-      case 'completed':
-        return fakeDatabase.todos.filter(todo => todo.completed);
-      case 'active':
-        return fakeDatabase.todos.filter(todo => !todo.completed);
-      default:
-        throw new Error(`Unknown filter: ${filter}`);
-    }
-  });
-};
-
-export const addTodos = (text) => {
-  delay(500).then(() => {
-    const todo = {
-      id: v4(),
-      text,
-      completed: false,
-    };
-    fakeDatabase.push(todo);
-    return todo;
-  });
-};
-
-export const toggleTodos = (id) => {
-  delay(500).then(() => {
-    const todo = fakeDatabase.find(t => t.id === id);
-    todo.completed = !todo.completed;
-    return todo;
-  });
-};
-ß
+export const toggleTodo = (id) =>
+    delay(300).then(() =>
+        new Promise((resolve) => {
+            const todo = fakeDatabase.toggleTodo(id);
+            resolve(todo);
+        })
+    );
